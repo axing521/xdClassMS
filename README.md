@@ -173,4 +173,25 @@
     };
     ```
 
-    
+
+### 3.vscode调试node
+
+* 启动调试命令
+
+  ```javascript
+  nodemon --inspect app.js
+  ```
+
+* Edge浏览器打开调试地址
+
+  ```javascript
+  edge://inspect/#devices
+  ```
+
+* 打开调试工具（方式多种）
+
+  ![image-20221110164523653](C:\Users\28274\AppData\Roaming\Typora\typora-user-images\image-20221110164523653.png)
+
+* 选择文件加入到工作区进行断点调试(Edge-F12-SourceCode-FileSystem)
+* **注意**：请求接口时不能进入断点时，需要关闭DevTools工具重新打开
+
