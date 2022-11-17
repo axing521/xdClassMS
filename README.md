@@ -195,3 +195,118 @@
 * 选择文件加入到工作区进行断点调试(Edge-F12-SourceCode-FileSystem)
 * **注意**：请求接口时不能进入断点时，需要关闭DevTools工具重新打开
 
+### 4.用户注册接口
+
+* 注册接口信息
+
+  * 请求方式post
+
+  * 参数
+
+    userName（string）
+
+    password（string）
+
+* 注册用户流程
+
+  * 校验用户名密码是否为空
+
+    ```javascript
+    let {userName, password} = req.body;
+    if(!userName || !password){
+        return res.send({code: 1, message: "用户名或者密码不能为空！"});
+    }
+    ```
+
+  * 校验当前用户是否已注册
+
+    ```javascript
+    //userController.js
+    /**
+    * 用户注册
+    */
+    const db = require("../db/index");
+    
+    exports.registerController = (req, res) => {
+        let {userName, password} = req.body;
+        //判断用户名密码是否为空
+        if(!userName || !password){
+    		return res.send({code: 1, data: "用户名或者密码不能为空！"});
+    }
+        const userSelectSql = "select * from user where name=?";
+        
+        db.query(userSelectSql, userName, (err, results) => {
+            if(err) return res.send({code: 1, message: err.message});
+            if(results.length > 0) return res.send({code: 1, message: "用户名已存在！"});
+    });
+        	//密码加密
+    }
+    ```
+
+  * 将用户的密码进行加密处理
+
+    * 分类
+
+      bcryptjs加密：每次生成的值是不一样的，更加安全。
+
+      md5加密：每次生成的值是一样的，有可能会被解密。
+
+    * 安装加密插件
+
+      ```javascript
+      npm i bcryptjs@2.4.3 -S
+      ```
+
+    * 配置
+
+      ```javascript
+      //userController.js
+      const bcrypt = require("bcryptjs");
+      
+      //bcrypt.hashSync(明文密码，随机长度)
+      password = bcrypt.hashSync(password, 10);
+      ```
+
+    * 生成随机的头像
+
+      ```javascript
+      //头像列表
+      const imgList = [
+          'https://xd-video-pc-img.oss-cn-beijing.aliyuncs.com/xdclass_pro/default/head_img/10.jpeg',
+        'https://xd-video-pc-img.oss-cn-beijing.aliyuncs.com/xdclass_pro/default/head_img/11.jpeg',
+        'https://xd-video-pc-img.oss-cn-beijing.aliyuncs.com/xdclass_pro/default/head_img/12.jpeg',
+        'https://xd-video-pc-img.oss-cn-beijing.aliyuncs.com/xdclass_pro/default/head_img/13.jpeg',
+        'https://xd-video-pc-img.oss-cn-beijing.aliyuncs.com/xdclass_pro/default/head_img/14.jpeg',
+        'https://xd-video-pc-img.oss-cn-beijing.aliyuncs.com/xdclass_pro/default/head_img/15.jpeg',
+        'https://xd-video-pc-img.oss-cn-beijing.aliyuncs.com/xdclass_pro/default/head_img/16.jpeg',
+        'https://xd-video-pc-img.oss-cn-beijing.aliyuncs.com/xdclass_pro/default/head_img/17.jpeg',
+        'https://xd-video-pc-img.oss-cn-beijing.aliyuncs.com/xdclass_pro/default/head_img/18.jpeg',
+        'https://xd-video-pc-img.oss-cn-beijing.aliyuncs.com/xdclass_pro/default/head_img/19.jpeg',
+      ]
+      //随机生成1 - 10的整数
+      const num = Math.floor(Math.random() * 10 + 1);
+      
+      //随机头像
+      imgList[num]
+      ```
+
+    * 新用户信息插入到数据库
+
+      ```javascript
+      const userInsertSql = "insert into user (name, pwd, head_img) value (?, ?, ?)";
+      
+      db.query(userInsertSql, {userName, password, imgList[num]}, (err, results) => {
+          //sql语句成功与否
+          if(err) res.send({code: 1, message: err.message});
+          //影响行数是否为1
+          if(results.affectedRows !== 1){
+              return res.send({code: 1, message: "注册失败"});
+      }
+          //注册成功
+          res.send({code: 0, message: "注册成功！"});
+      })
+      ```
+
+  * 注意，后端写sql等字符串时候，最好用``，以免传值用的?也是""
+  * 注意，post写请求的时候都是当作字符串处理的，名字直接写老六就行，而不是“老六”，这样反而后端写入sql语句时会出问题。
+  * 
