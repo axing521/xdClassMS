@@ -2,8 +2,8 @@
  * @creater:ACBash
  * @create_time:22-11-10 12:25:56
  * @last_modify:ACBash
- * @modify_time:22-11-10 12:54:17
- * @line_count:27
+ * @modify_time:22-11-18 1:3:0
+ * @line_count:46
  **/
 
 const express = require("express");
@@ -29,6 +29,25 @@ app.use(cors());
  */
 const userRouter = require("./router/user");
 app.use("/api/v1/user", userRouter);
+
+/**
+ * 错误中间件
+ */
+const joi = require("joi");
+app.use((err, req, res, next) => {
+    //joi参数校验失败
+    if(err instanceof joi.ValidationError){
+        return res.send({
+            code: 1,
+            message: err.message
+		});
+	}
+    //未知错误
+    res.send({
+        code: 1,
+        message: err.message
+    })
+})
 
 app.listen(3000, () => {
     console.log("服务运行在 http://127.0.0.1:3000");

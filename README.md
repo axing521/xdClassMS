@@ -309,4 +309,74 @@
 
   * 注意，后端写sql等字符串时候，最好用``，以免传值用的?也是""
   * 注意，post写请求的时候都是当作字符串处理的，名字直接写老六就行，而不是“老六”，这样反而后端写入sql语句时会出问题。
-  * 
+
+###5.用户提交的表单数据校验
+
+* 详细配置地址：https://www.npmjs.com/package/@escook/express-joi
+
+* 安装
+
+  ```javascript
+  npm i @hapi/joi@17.1.1             //验证规则
+  npm i @escook/express-joi@1.1.1    //自动对数据校验的中间件
+  ```
+
+* 配置
+
+  * 定义用户参数校验规则
+
+    ```javascript
+    //check.js
+    const joi = require("joi");
+    
+    const username = joi.string().pattern(/^[\S]{1,6}$/).required();
+    
+    const password = joi.string().pattern(/^[\S]{6,15}$/).required();
+    
+    exports.userCheck = {
+        body: {
+            username,
+            password
+    	}
+    }
+    ```
+
+  * 使用
+
+    ```javascript
+    //user.js
+    const expressJoi = require("@escook/express-joi");
+    
+    const {userCheck} = require("../utils/check");
+    
+    //注册
+    router.post(
+        "/register",
+        expressJoi(userCheck),
+        userController.registerController
+    )
+    ```
+
+  * 错误中间件
+
+    ```javascript
+    //app.js
+    const joi = require("joi");
+    
+    //错误级别中间件
+    app.use((err, req, res, next) => {
+        //joi参数校验失败
+        if(err instanceof joi.ValidationError){
+            return res.send({
+                code: 1,
+                message: err.message
+    		});
+    	}
+        //未知错误
+        res.send({
+            code: 1,
+            message: err.message
+        })
+    })
+    ```
+
