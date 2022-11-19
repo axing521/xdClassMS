@@ -380,3 +380,122 @@
     })
     ```
 
+### 6.用户登录接口
+
+* 登录接口信息
+
+  * 请求方式POST
+
+  * 参数
+
+    userName（string）
+
+    password（string）
+
+* 校验用户提交参数是否合法
+
+  ```javascript
+  //user.js
+  router.post("/login", expressJoi(userCheck), userController.loginController);
+  ```
+
+* 判断用户名是否存在
+
+  ```javascript
+  //userController.js
+  exports.loginController = (req, res) => {
+      const {userName, password} = req.body;
+      const userSelectSql = `select * from user where name = ?`;
+      db.query(userSelectSql, userName, (err, results) => {
+          if(err) return res.send({code: 1, message: err.message})；
+          if(results.length == 0) return res.send({code: 1, message: `账号不存在！`});
+          res.send({code: 0, message: `登录成功！`});
+  })
+  }
+  ```
+
+* 判断密码是否正确
+
+  ```javascript
+  const compareState = bcrypt.compareSync(password, results[0].pwd);
+  if(!compareState) return res.send({code: 1, message: `密码错误！`});
+  ```
+
+* JWT生成token认证
+
+  * JWT
+
+    全称是json web token，最新流行的跨域认证方案，可以在客户端和服务器之间安全可靠的传递用户信息。(session不能跨域)
+
+    生成token时，不能将用户的密码一起拼接。
+
+    ```
+    "xdclasseyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIwIjp7ImlkIjoxNSwibmFtZSI6IuWwj-a7tCIsInB3ZCI6IiQyYSQxMCQubTY3bHdYMi5WVmFSdUpEd0dDdHhlM0cwRTA3d1NMcEZkdlFraHJlTFRuNTJicVkuelpuVyIsImhlYWRfaW1nIjpudWxsLCJwaG9uZSI6IiIsImNyZWF0ZV90aW1lIjpudWxsfSwicHdkIjoiIiwiaGVhZF9pbWciOiIiLCJpYXQiOjE2NDg3OTQyMDYsImV4cCI6MTY0ODc5NzgwNn0.PQD7ucT3UgwW59HAITIQqUPVc3lNSN0EuhQ9hiHILMk"
+    
+    头部，用户信息，签名
+    
+    头部：加密算法的信息，创建token的时间，过期的时间
+    用户信息：id、昵称、头像
+    签名：头部和用户信息的加密内容
+    ```
+
+  * JWT工作原理
+
+    ![image-20220424125259447](https://file.xdclass.net/note/2022/79-vue3%2Bnode%2Bmysql/images/image-20220424125259447.png)
+
+  * 安装JWT插件
+
+    ```javascript
+    npm i jsonwebtoken@8.5.1 -S
+    ```
+
+  * 定义加密内容
+
+    ```javascript
+    //config/jwtSecretKey.js
+    module.export = {
+        jwtSecretKey: `xdclass.net`
+    }
+    ```
+
+  * 配置
+
+    ```javascript
+    //userController.js
+    const jwt = require("jsonwebtoken");
+    const {jwtSecretKey} = require("../config/jwtSecretKey");
+    
+    //jwt生成
+    const user = {...results[0], pwd: ``}
+    const token = jwt.sign(user, jwtSecretKey, {expireIn: `5s`});
+    res.send({code: 0, message: `登录成功`, token: `Bearer ` + token});
+    ```
+
+* 解析token
+
+  * 安装
+
+    ```javascript
+    npm i express-jwt@6.1.1 -S
+    ```
+
+  * 在路由配置之前配置解析token中间件
+
+    ```javascript
+    const expressJwt = require("express-jwt");
+    const {jwtSecretKey} = require("../config/jwtSecretKey");
+    
+    //expressJwt({secret: jwtSecretKey})解析token的中间件
+    //unless({path: [/^\/user\//]})指定哪些接口不需要访问权限
+    app.use(expressJwt({secret: jwtSecretKey, algorithms: [`HS256`]}).unless({path:['/api/v1/user/register', '/api/v1/user/login'] }))
+    ```
+
+  * 错误中间件处理身份认证失败的错误
+
+    ```javascript
+    if(err.name == `UnauthorizedError`){
+        return res.send({code: 1, message: `身份认证失败！`})
+    }
+    ```
+
+    

@@ -2,11 +2,14 @@
  * @creater:ACBash
  * @create_time:22-11-10 12:56:22
  * @last_modify:ACBash
- * @modify_time:22-11-17 13:10:44
- * @line_count:56
+ * @modify_time:22-11-20 0:41:50
+ * @line_count:83
  **/
 
 const db = require("../config/db");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const {jwtSecretKey} = require("../config/jwtSecretKey");
 
 /**
  * 注册接口逻辑
@@ -35,7 +38,6 @@ exports.registerController = (req, res) => {
         if(results.length > 0) return res.send({code: 1, message: `该用户名已经存在！`})
 
         //用户密码加密
-        const bcrypt = require("bcryptjs");
         const passwordB = bcrypt.hashSync(password, 10);
 
         //随机生成用户头像
@@ -60,5 +62,30 @@ exports.registerController = (req, res) => {
             if(err) res.send({code: 1, message: err.message});
             res.send({code: 0, message: `注册成功!`});
         });
+    });
+};
+
+/**
+ * 登录接口逻辑
+ */
+exports.loginController = (req, res) => {
+    const {userName, password} = req.body;
+    
+    const userSelectSql = `select * from user where name = ?`;
+
+    db.query(userSelectSql, userName, (err, results) => {
+        if(err) return res.send({code: 1, message: err.message});
+
+        if(results.length == 0) return res.send({code: 1, message: `账号不存在，请先注册！`});
+        
+        const compareState = bcrypt.compareSync(password, results[0].pwd);
+
+        if(!compareState) return res.send({code: 1, message: `密码错误！`});
+        
+        //配置token
+        const user = {...results[0], pwd: ``};
+        const token = jwt.sign(user, jwtSecretKey, {expiresIn: `4h`});
+
+        res.send({code: 0, message: `登录成功！`, token: `Bearer ` + token});
     });
 };
