@@ -2,8 +2,8 @@
  * @creater:ACBash
  * @create_time:22-11-10 12:25:56
  * @last_modify:ACBash
- * @modify_time:22-11-20 0:56:12
- * @line_count:60
+ * @modify_time:22-11-21 0:44:39
+ * @line_count:63
  **/
 
 const express = require("express");
@@ -39,6 +39,9 @@ app.use(expressJwt({secret: jwtSecretKey, algorithms: [`HS256`]})
  */
 const userRouter = require("./router/user");
 app.use("/api/v1/user", userRouter);
+
+const courseRouter = require("./router/course");
+app.use("/api/v1/course", courseRouter);
 
 /**
  * 错误中间件

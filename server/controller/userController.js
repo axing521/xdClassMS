@@ -2,8 +2,8 @@
  * @creater:ACBash
  * @create_time:22-11-10 12:56:22
  * @last_modify:ACBash
- * @modify_time:22-11-20 0:41:50
- * @line_count:83
+ * @modify_time:22-11-20 23:43:30
+ * @line_count:99
  **/
 
 const db = require("../config/db");
@@ -84,8 +84,24 @@ exports.loginController = (req, res) => {
         
         //配置token
         const user = {...results[0], pwd: ``};
-        const token = jwt.sign(user, jwtSecretKey, {expiresIn: `4h`});
+        const token = jwt.sign(user, jwtSecretKey, {expiresIn: `24h`});
 
         res.send({code: 0, message: `登录成功！`, token: `Bearer ` + token});
+    });
+};
+
+/**
+ * 用户信息查询接口逻辑
+ */
+exports.userInfoController = (req, res) => {
+    //获取用户token并解析
+    const token = req.headers.authorization;
+    const userInfo = jwt.verify(token.split(`Bearer `)[1], jwtSecretKey);
+    res.send({
+        code: 0,
+        data: {
+            name: userInfo.name,
+            headImg: userInfo.head_img
+        }
     });
 };

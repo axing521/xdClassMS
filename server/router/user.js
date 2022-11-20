@@ -2,8 +2,8 @@
  * @creater:ACBash
  * @create_time:22-11-10 12:51:44
  * @last_modify:ACBash
- * @modify_time:22-11-19 20:37:5
- * @line_count:17
+ * @modify_time:22-11-20 23:23:37
+ * @line_count:22
  **/
 
 const express = require("express");
@@ -21,5 +21,10 @@ router.post("/register", expressJoi(userCheck), userController.registerControlle
  * 用户登录接口
  */
 router.post("/login", expressJoi(userCheck), userController.loginController);
+
+/**
+ * 用户信息查询接口
+ */
+router.get("/userInfo", userController.userInfoController);
 
 module.exports = router;

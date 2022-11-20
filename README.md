@@ -498,4 +498,99 @@
     }
     ```
 
-    
+
+### 7. 用户信息查询接口
+
+* 新建查询接口
+
+  ```javascript
+  //获取用户数据
+  router.get("/userInfo", userController.userInfoController);
+  ```
+
+* 解析token方法
+
+  ```javascript
+  const userInfo = jwt.verify(token.split(`Bearer `)[1], jwtSecretKey);
+  ```
+
+* 查询接口逻辑
+
+  ```javascript
+  //获取用户数据
+  exports.userInfoController = (req, res) => {
+      //获取用户token解析
+      const token = req.headers.authorization;
+      const userInfo = jwt.verify(token.split(`Bearer `)[1], jwtSecretKey);
+      res.send({
+      	code: 0,
+          data: {
+              name: userInfo.name,
+              headImg: userInfo.head_img
+  		}
+  	})
+  }
+  ```
+
+### 8. 课程查询接口
+
+* 课程查询接口信息
+
+  * 请求方式 GET
+
+  * 参数
+
+    category（string）：分类
+
+    page（number）：页数
+
+    size（number）：个数
+
+* 课程模块的路由配置
+
+  ```javascript
+  //app.js
+  const courseRouter = require("./router/course");
+  app.use("/api/v1/course", courseRouter);
+  ```
+
+* 课程查询接口配置
+
+  ```javascript
+  //course.js
+  const express = require("express");
+  const router = express.Router();
+  const courseController = require("../controller/courseController");
+  const {findCourseCheck} = require("../utils/check");
+  //查询课程
+  router.get("/find", expressJoi(findCourseCheck), courseController.listVideo);
+  ```
+
+* 课程查询逻辑，查询数据库返回客户端
+
+  ```javascript
+  //courseController.js
+  const db = require("../config/db");
+  //课程查询逻辑
+  exports.listVideo = (req, res) => {
+      let {category, page, size} = req.query;
+      page = (page - 1) * size;
+      let pageSql = `select * from video where del = 0 and category = ? order by id limit ?,?`;
+      let totalSql = `select count(*) as total from video where del = 0 and category = ?`;
+      
+      db.query(pageSql, [category, Number(page), Number(size)], (err, resPage) => {
+          if(err) return res.send({code: 1, message: err.message});
+          db.query(totalSql, [category], (err, resTotal) => {
+              if(err) return res.send({code: 1, message: err.message});
+              res.send({
+                  code: 0,
+                  data: {
+                      total: resTotal[0].total,
+                      list: resPage
+  				}
+  			})
+  		})
+  	})
+  }
+  ```
+
