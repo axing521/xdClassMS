@@ -594,3 +594,119 @@
   }
   ```
 
+### 9. 课程修改接口
+
+* 课程修改接口信息
+
+  * 请求方式GET
+
+  * 参数
+
+    title（string）：标题
+
+    price（number）：价格
+
+    id（number）：课程id
+
+* 课程修改接口配置
+
+  ```javascript
+  //course.js
+  //修改课程
+  router.get("/update", expressJoi(updateCourseCheck), courseController.updateVideoById);
+  ```
+
+* 参数校验规则
+
+  ```javascript
+  //check.js
+  //课程修改提交参数校验规则
+  const title = joi.string();
+  const price = joi.number().integer();
+  const id = joi.number().min(1).integer().required();
+  
+  exports.updateCourseCheck = {
+      query: {
+          title,
+          price,
+          id
+  }
+  }
+  ```
+
+* 课程修改逻辑
+
+  ```javascript
+  //courseController.js
+  exports.updateVideoById = (req, res) => {
+      let {title, price, id} = req.query;
+      let arr = [];
+      let changeSql = `update video set `;
+      
+      //修改标题和价格
+      if(title && price){
+          changeSql += `title = ?, price = ? where id = ?`;
+          arr = [title, Number(price), Number(id)];
+  	}else if(title){
+          //修改标题
+          changeSql += `title = ? where id = ?`;
+          arr = [title, Number(id)];
+  	}else if(price){
+          //修改课程价格
+          changeSql += `price = ? where id = ?`;
+          arr = [Number(price), Number(id)];
+  	}
+      
+      db.query(changeSql, arr, (err, results) => {
+          if(err) return res.send({code: 1, message: err.message});
+          res.send({
+              code: 0,
+              data: {
+                  message: `修改成功！`
+  			}
+          })
+  	})
+  }
+  ```
+
+### 10. 课程删除接口
+
+* 课程删除接口配置
+
+  ```javascript
+  //course.js
+  router.get("/delete", courseController.deleteVideoById);
+  ```
+
+* 课程修改提交参数校验规则
+
+  ```javascript
+  exports.deleteCourseCheck = {
+      query: {
+          id
+      }
+  }
+  ```
+
+* 课程删除逻辑
+
+  ```javascript
+  //courseController.js
+  exports.deleteVideoById = (req, res) => {
+      let {id} = req.query;
+      let deleteSql = `update video set del = 1 where id = ?`;
+      
+      db.query(deleteSql, id, (err, results) => {
+          if(err) return res.send({code: 1, message: err.message});
+          
+          res.send({
+              code: 0,
+              data: {
+                  message: `删除成功`
+  			}
+          })
+  	})
+  }
+  ```
+
+  

@@ -2,8 +2,8 @@
  * @creater:ACBash
  * @create_time:22-11-18 0:55:53
  * @last_modify:ACBash
- * @modify_time:22-11-21 0:50:33
- * @line_count:25
+ * @modify_time:22-11-21 17:32:6
+ * @line_count:45
  **/
 
 const joi = require("joi");
@@ -29,5 +29,25 @@ exports.findCourseCheck = {
         category,
         page,
         size
+    }
+}
+
+//课程修改提交参数校验规则
+const title = joi.string();
+const price = joi.number().integer();
+const id = joi.number().min(1).integer().required();
+
+exports.updateCourseCheck = {
+    query: {
+        title,
+        price,
+        id
+    }
+}
+
+//课程修改提交参数校验规则
+exports.deleteCourseCheck = {
+    query: {
+        id
     }
 }
