@@ -709,4 +709,90 @@
   }
   ```
 
-  
+### 11. 页面需求分析
+
+* 设计图页面
+
+  * 用户页面
+
+    ![image-20220426105859708](https://file.xdclass.net/note/2022/79-vue3%2Bnode%2Bmysql/images/image-20220426105859708.png)
+
+  * 首页
+
+    ![image-20220426110003101](https://file.xdclass.net/note/2022/79-vue3%2Bnode%2Bmysql/images/image-20220426110003101.png)
+
+* 页面需求分析
+
+  * 通过路由实现首页、登录、注册页面切换
+  * 使用element-plus组件库实现页面的样式
+    * 布局
+    * 菜单
+    * 表格
+  * 使用element-plus组件库实现页面的交互
+    * 搜索功能
+    * 分页切换功能（组件库有问题的组件）
+    * 编辑修改课程信息功能
+    * 删除课程功能
+
+### 12. 项目初始化
+
+* vue3项目创建
+
+  * 安装脚手架vue/cli
+
+    ```javascript
+    npm install -g @vue/cli@5.0.4
+    ```
+
+  * 查看vue/cli版本
+
+    ```javascript
+    vue -v
+    vue --version
+    ```
+
+  * 如果版本不一致
+
+    ```javascript
+    npm uninstall -g vue-cli
+    npm install -g @vue/cli@5.0.4
+    ```
+
+  * 创建项目
+
+    ```javascript
+    //终端进入项目文件存放位置
+    vue create xxx	//xxx文件名
+    ```
+
+  * 查看vue版本
+
+    ```javascript
+    //在package.json中查看
+    ```
+
+  * template 标签警告
+
+    ```javascript
+    //jsconfig.json
+    "jsx": "preserve"
+    ```
+
+* 项目基础样式
+
+  ```javascript
+  //	/common/base.less
+  ```
+
+* 配置项目文件结构
+
+  ```javascript
+  views		//路由页面
+  components	//组件
+  router		//路由配置
+  assets		//图片
+  common		//公共样式
+  api			//接口
+  utils		//工具：axios封装，全局事件总线等等
+  ```
+
