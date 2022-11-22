@@ -796,3 +796,159 @@
   utils		//工具：axios封装，全局事件总线等等
   ```
 
+### 13.预处理器、组件库引入和代码管理
+
+* less预处理器
+
+  * 安装
+
+    ```javascript
+    npm i less@4.1.2 less-loader@7 -S
+    ```
+
+  * 使用
+
+    ```html
+    <style lang='less'>
+    </style>
+    ```
+
+* element-plus组件自动引入配置
+
+  * 官网地址：https://element-plus.org/zh-CN/guide/quickstart.html
+
+  * 安装组件库依赖包
+
+    ```javascript
+    npm install element-plus@2.1.11 -S
+    ```
+
+  * 按需导入
+
+    ```javascript
+    npm install -D unplugin-vue-components@0.19.3 unplugin-auto-import@0.7.1
+    ```
+
+  * vue.config.js配置
+
+    ```javascript
+    const AutoImport = require('unplugin-auto-import/webpack');
+    const Components = require('unplugin-vue-components/webpack');
+    const { ElementPlusResolver } = require('unplugin-vue-components/resolvers');
+    
+    module.exports = {
+      lintOnSave: false,   //关闭ESlint校验
+      configureWebpack: {
+        plugins: [
+          AutoImport({
+            resolvers: [ElementPlusResolver()],
+          }),
+          Components({
+            resolvers: [ElementPlusResolver()],
+          }),
+        ],
+      },
+    };
+    ```
+
+* element-plus图标自动引入配置
+
+  * 全局配置
+
+    ```javascript
+    //main.js
+    import * as elementIcons from "@element-plus/icons-vue";
+    
+    for(let iconName in elementIcons){
+        app.component(iconName, elementIcons[iconName]);
+    }
+    ```
+
+  * 也可以自动导入，安装插件npm install -D unplugin-icons@0
+  * 然后配置vue.config.js
+
+* 代码提交github远程仓库管理
+
+### 14. 路由页面配置
+
+* 路由插件安装
+
+  ```javascript
+  npm i vue-router@4.0.14 -S
+  ```
+
+* 主入口文件引入路由配置
+
+  ```javascript
+  //main.js
+  import router from './router/index';
+  app.use(router);
+  ```
+
+* 页面展示
+
+  ```html
+  <router-view></router-view>
+  ```
+
+* 路由配置
+
+  ```javascript
+  import { createRouter, createWebHashHistory } from 'vue-router';
+  const router = createRouter({
+    history: createWebHashHistory(),
+    routes: [
+      {
+        path: '/',
+        redirect: '/login',
+      },
+      {
+        path: '/home',
+        component: () => import('../views/Home'),
+        meta: {
+          isAuth: true,
+        },
+      },
+      {
+        path: '/login',
+        component: () => import('../views/Login'),
+      },
+      {
+        path: '/register',
+        component: () => import('../views/Register'),
+      },
+    ],
+  });
+  // 路由拦截
+  router.beforeEach((to, from, next) => {
+    //判断是否需要登录权限
+    if (to.meta.isAuth) {
+      if (localStorage.getItem('token')) {
+        next();
+      } else {
+        ElMessage.error({
+          message: '请先登录',
+          type: 'error',
+        });
+        router.push('./login');
+      }
+    } else {
+      next();
+    }
+  });
+  
+  export default router;
+  ```
+
+* 使用
+
+  ```javascript
+  import { useRouter } from "vue-router";
+  //跳转登录页面
+  const router = useRouter()
+  
+  // import router from './router/index.js'
+  router.push('/login')
+  ```
+
+  
