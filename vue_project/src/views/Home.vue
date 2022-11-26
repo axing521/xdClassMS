@@ -6,12 +6,12 @@
         <div class="common-layout">
             <el-container>
                 <el-aside width="200px">
-                    <Aside />
+                    <Aside :isCollapse = 'isCollapse' />
                 </el-aside>
 
                 <el-container>
                     <el-header>
-                        <Header />
+                        <Header :handleCollapse = 'handleCollapse' :isCollapse = 'isCollapse'/>
                     </el-header>
 
                     <el-main>
@@ -27,9 +27,15 @@
 import Header from '../components/Header.vue'
 import Aside from '../components/Aside.vue'
 import Main from '../components/Main.vue'
-import router from '../router/index'
+import { ref } from 'vue';
+/* import router from '../router/index'
 const toGo = (val) => {
     router.push(val);
+} */
+
+let isCollapse = ref(false);
+const handleCollapse = () => {
+    isCollapse.value = !isCollapse.value;
 }
 
 </script>
