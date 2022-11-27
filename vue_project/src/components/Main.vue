@@ -2,11 +2,11 @@
     <div>
         <div class='main'>
             <!-- <div>搜索框</div> -->
-            <Table :list = 'data.list' :editClick = 'editClick' />
+            <Table :list = 'data.list' :editClick = 'editClick'  />
             <!-- <div>分页</div> -->
         </div>
 
-        <EditPop :popShow = 'popShow' v-if = 'popShow' :message = 'courseItemState.message' />
+        <EditPop :popShow = 'popShow' v-if = 'popShow' :message = 'courseItemState.message' :confirmClick = 'confirmClick' />
     </div>
 </template>
 
@@ -79,11 +79,39 @@ let popShow = ref(false);
 const isShowPop = (flag) => {
     popShow.value = flag;
 }
-//编辑的按钮
+//编辑的按钮点击事件函数
 const editClick = (val) => {
     isShowPop(true);
-    console.log(val);
     courseItemState.message = val;
+};
+//编辑弹窗vue的取消和确认按钮逻辑
+const confirmClick = (val) => {
+    if(val == 'cancel'){
+        isShowPop(false);
+    }else if(val.title != courseItemState.message.title || val.price != courseItemState.message.price){
+      //更改对应课程的title/price
+        data.list.map((item) => {
+            if(item.id == val.id){
+                item.title = val.title;
+                item.price = val.price;
+            }
+        });
+        
+        //修改接口的调用...
+
+        isShowPop(false);
+        ElMessage({
+            showClose: true,
+            message: '更改成功！',
+            type: 'success'
+        })
+    }else{
+        ElMessage({
+            showClose: true,
+            message: '没发现有更改的内容噢~',
+            type: 'warning'
+        })
+    }
 };
 
 </script>
