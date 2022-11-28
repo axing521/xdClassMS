@@ -2,7 +2,7 @@
     <div>
         <div class='main'>
             <!-- <div>搜索框</div> -->
-            <Table :list = 'data.list' :editClick = 'editClick'  />
+            <Table :list = 'data.list' :editClick = 'editClick' :deleteHandle = 'deleteHandle' />
             <!-- <div>分页</div> -->
         </div>
 
@@ -67,7 +67,7 @@ const data = reactive({
 })
 
 /**
- * 编辑的逻辑
+ * 课程编辑的逻辑
  */
 //编辑的数据
 const courseItemState = reactive({
@@ -110,6 +110,25 @@ const confirmClick = (val) => {
             showClose: true,
             message: '没发现有更改的内容噢~',
             type: 'warning'
+        })
+    }
+};
+
+/**
+ * 课程删除的逻辑
+ */
+const deleteHandle = (val) => {
+    if(val){
+        data.list = data.list.filter((item) => {
+            return item.id != val;
+        });
+
+        //删除接口的调用...
+
+        ElMessage({
+            showClose: true,
+            message: '删除成功！',
+            type: 'success'
         })
     }
 };

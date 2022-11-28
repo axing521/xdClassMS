@@ -20,7 +20,7 @@
                     <el-button type='primary' @click = 'editClick(scope.row)'>
                         编辑
                     </el-button>
-                    <el-popconfirm title="确定要删除该课程吗?">
+                    <el-popconfirm title="确定要删除该课程吗?" @confirm = 'deleteHandle(scope.row.id)'>
                         <template #reference>
                             <el-button type="danger">删除</el-button>
                         </template>
@@ -34,7 +34,7 @@
 <script setup>
 import { defineProps } from 'vue';
 
-const { list, editClick } = defineProps(['list', 'editClick']);
+const { list, editClick, deleteHandle } = defineProps(['list', 'editClick', 'deleteHandle']);
 
 /**
  * 定义每行课程的区分颜色
