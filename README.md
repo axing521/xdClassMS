@@ -998,4 +998,4 @@
 ### 25. 存在的问题
 
 * vue中v-model，:model，:value，:prop , :data,reactive, #defalut = 'scope',v-if,v-show,ref, prop都是什么意思
-* 异步，async，await
+* 异步，async，await,computed

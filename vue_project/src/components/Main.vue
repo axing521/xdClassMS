@@ -1,9 +1,14 @@
 <template>
     <div>
         <div class='main'>
-            <!-- <div>搜索框</div> -->
-            <Table :list = 'data.list' :editClick = 'editClick' :deleteHandle = 'deleteHandle' />
-            <!-- <div>分页</div> -->
+            <el-form>
+                <el-form-item>
+                    <el-input placeholder = '请输入内容' v-model.trim = 'inputValue'></el-input>
+                </el-form-item>
+                <el-button type = 'primary' @click = 'handleClick'>查询</el-button>
+            </el-form>
+            <Table :list = 'courseList' :editClick = 'editClick' :deleteHandle = 'deleteHandle' />
+            <Pagination :currentChange = 'currentChange' />
         </div>
 
         <EditPop :popShow = 'popShow' v-if = 'popShow' :message = 'courseItemState.message' :confirmClick = 'confirmClick' />
@@ -11,9 +16,10 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import Table from './Table.vue';
 import EditPop from './EditPop.vue';
+import Pagination from './Pagination.vue';
 
 //初始化的写死数据
 const data = reactive({
@@ -63,8 +69,65 @@ const data = reactive({
             price: "49",
             title: "22年新版-玩转ECMAScript6零基础到进阶实战es6视频"
         },
-    ]
+    ],
+
+    page: 1,  //默认展示第一页的数据
+    total: 15,   //数据的总条数
 })
+
+/**
+ * 分页的逻辑
+ */
+const currentChange = (val) => {
+    if(val == 'pre'){
+        if(data.page > 1){
+            data.page--;
+        }else{
+            ElMessage({
+                message: '已经是第一页了！',
+                type: 'warning',
+                showClose: true
+            })
+        }
+    }else if(val == 'next'){
+        if(data.page < Math.ceil(data.total / 5)){
+              data.page++;
+        }else{
+            ElMessage({
+                message: '已经是最后一页了！',
+                type: 'warning',
+                showClose: true
+            })
+        }
+    }
+
+    //请求课程的接口...
+}
+
+/**
+ * 搜索框的逻辑
+ */
+const inputValue = ref('');
+//搜索的逻辑
+const courseList = computed(() => {
+    return data.list?.filter((item) => {
+        return item.title.includes(inputValue.value);
+    })
+});
+//搜索按钮的点击事件
+const handleClick = () => {
+    if(inputValue.value){
+        ElMessage({
+          message: '查询成功！',
+          type: 'success'
+        })
+    }else{
+      ElMessage({
+        message: '请输入搜索内容！',
+        type: 'error'
+      })
+    }
+};
 
 /**
  * 课程编辑的逻辑
