@@ -977,6 +977,16 @@
 
 ### 18. axios请求二次封装
 
+* axios安装
+
+  ```javascript
+  npm i axios@0.27.2 -S
+  ```
+
+* 官网
+
+  http://www.axios-js.com/zh-cn/
+
 ### 19. 注册和登录接口
 
 ### 20.获取用户信息接口

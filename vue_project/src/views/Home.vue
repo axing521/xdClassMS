@@ -27,7 +27,8 @@
 import Header from '../components/Header.vue'
 import Aside from '../components/Aside.vue'
 import Main from '../components/Main.vue'
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue'
+import request from '../utils/request'
 /* import router from '../router/index'
 const toGo = (val) => {
     router.push(val);
@@ -37,6 +38,17 @@ let isCollapse = ref(false);
 const handleCollapse = () => {
     isCollapse.value = !isCollapse.value;
 }
+
+onMounted(() => {
+    request({
+        method: 'post',
+        url: '/api/v1/user/login',
+        data: {
+            userName: 'acbash',
+            password: 'zxcmnb123'
+        }
+    })
+});
 
 </script>
 
