@@ -2,7 +2,7 @@
  * @creater:ACBash
  * @create_time:22-11-28 16:14:35
  * @last_modify:ACBash
- * @modify_time:22-11-28 20:54:30
+ * @modify_time:22-12-3 16:53:9
  * @line_count:56
  **/
 
@@ -13,7 +13,7 @@ import axios from 'axios';
  * 创建axios实例
  */
 const ENV = process.env.NODE_ENV;
-const host = ENV == 'development' ? 'http://127.0.0.1' : 'http://api.acbash.icu';
+const host = ENV == 'development' ? 'http://127.0.0.1:3000' : 'http://api.acbash.icu';
 const service = axios.create({
     baseURL: host,
     timeout: '3000',

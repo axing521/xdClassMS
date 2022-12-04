@@ -39,16 +39,19 @@ const handleCollapse = () => {
     isCollapse.value = !isCollapse.value;
 }
 
-onMounted(() => {
+/* onMounted(() => {
     request({
         method: 'post',
         url: '/api/v1/user/login',
         data: {
             userName: 'acbash',
             password: 'zxcmnb123'
+        },
+        headers: {
+
         }
     })
-});
+}); */
 
 </script>
 

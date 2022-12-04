@@ -34,6 +34,7 @@
 
 import { reactive, ref } from 'vue';
 import router from '../router/index';
+import {getRegister} from '../api/index';
 
 /**
  * 初始的ref
@@ -57,7 +58,8 @@ const rules = {
  * 注册的方法
  */
 const onRegister = () => {
-    //登录信息不为空则进行登录接口调用
+    //注册信息不为空则进行登录接口调用
+    /* getRegisterData() */
     ref_form.value.validate((flag) => {
         if(flag){
             getRegisterData()
@@ -67,17 +69,24 @@ const onRegister = () => {
 /**
  * 注册的接口，获取执行注册后，后台返回的数据
  */
-const getRegisterData = () => {
+const getRegisterData = async() => {
     //注册接口的调用......
-
+    const res = await getRegister({userName: userInfo.userName, password: userInfo.password});
+    console.log(res);
     //注册成功的消息反馈
-    ElMessage({
-        message: '注册成功！',
-        type: 'success'
-    })
+    if(res?.message){
+        /* ElMessage({
+          message: '注册成功！',
+          type: 'success'
+        }) */
 
-    //成功后通过router跳转到登录路径
-    router.push('/login');
+        //成功后通过router跳转到登录路径
+        router.push('/login');
+    }
+    ElMessage({
+          message: '注册成功！',
+          type: 'success'
+        })
 };
 
 /**
