@@ -7,17 +7,19 @@
             <span>首页</span>
         </div>
         <div class = 'user' @mouseenter="isShowUserInfo('show')" @mouseleave="isShowUserInfo('leave')">
-            <img src="https://xd-video-pc-img.oss-cn-beijing.aliyuncs.com/xdclass_pro/default/head_img/13.jpeg" alt="dance">
+            <img :src=userInfo.headImg alt="dance">
             <div class = 'userInfo' v-show="show">
-                <div>axing</div>
-                <div>退出登录</div>
+                <div>{{userInfo.name}}</div>
+                <div @click = 'loginOut'>退出登录</div>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, defineProps } from 'vue';
+import router from '@/router';
+import { ref, defineProps, onMounted, reactive } from 'vue';
+import {getUserInfo} from '../api/index';
 
 /**
  * 获取父组件的参数
@@ -31,6 +33,35 @@ let show = ref(false);
 const isShowUserInfo = (flag) => {
     show.value = flag == 'show';
 }
+
+/**
+ * 获取用户信息
+ */
+const userInfo = reactive({
+    name: '',
+    headImg: ''
+})
+//用户信息接口的调用
+const getUserInfoData = async () => {
+    const res = await getUserInfo();
+
+    if(res){
+        userInfo.name = res.name;
+        userInfo.headImg = res.headImg;
+    }
+};
+//初始化渲染的时候调用
+onMounted(() => {
+    getUserInfoData();
+});
+
+/**
+ * 退出登录按钮
+ */
+const loginOut = () => {
+    router.push('/login');
+    localStorage.removeItem('token');
+};
 
 </script>
 

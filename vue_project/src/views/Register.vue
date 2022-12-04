@@ -59,7 +59,6 @@ const rules = {
  */
 const onRegister = () => {
     //注册信息不为空则进行登录接口调用
-    /* getRegisterData() */
     ref_form.value.validate((flag) => {
         if(flag){
             getRegisterData()
@@ -73,10 +72,10 @@ const getRegisterData = async() => {
     //注册接口的调用......
     const res = await getRegister({userName: userInfo.userName, password: userInfo.password});
     
-    //注册成功的消息反馈'''
+    //注册成功的消息反馈
     if(res){
         ElMessage({
-          message: res,
+          message: res.message,
           type: 'success'
         })
 

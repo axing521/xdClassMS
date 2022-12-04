@@ -2,7 +2,7 @@
  * @creater:ACBash
  * @create_time:22-11-28 16:14:35
  * @last_modify:ACBash
- * @modify_time:22-12-4 15:55:25
+ * @modify_time:22-12-4 18:58:25
  * @line_count:56
  **/
 
@@ -37,7 +37,7 @@ service.interceptors.response.use((res) => {
     const {code, message} = res.data;
 
     if(code == 0){
-        return message;
+        return res.data;
     }else{
         ElMessage({
             message: message,

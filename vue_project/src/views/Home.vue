@@ -32,14 +32,8 @@ import request from '../utils/request'
 /* import router from '../router/index'
 const toGo = (val) => {
     router.push(val);
-} */
 
-let isCollapse = ref(false);
-const handleCollapse = () => {
-    isCollapse.value = !isCollapse.value;
-}
-
-/* onMounted(() => {
+onMounted(() => {
     request({
         method: 'post',
         url: '/api/v1/user/login',
@@ -51,7 +45,14 @@ const handleCollapse = () => {
 
         }
     })
-}); */
+});
+} */
+
+
+let isCollapse = ref(false);
+const handleCollapse = () => {
+    isCollapse.value = !isCollapse.value;
+}
 
 </script>
 

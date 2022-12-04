@@ -33,6 +33,7 @@
 
 import { reactive, ref } from 'vue';
 import router from '../router/index';
+import {getLogin} from '../api/index';
 
 /**
  * 初始的ref
@@ -66,20 +67,24 @@ const onLogin = () => {
 /**
  * 登录的接口，获取执行登录后，后台返回的数据
  */
-const getLoginData = () => {
+const getLoginData = async () => {
     //登录接口的调用......
-
-    //储存后端返回的token在本地客户端
-    localStorage.setItem('token', 1);
+    const res = await getLogin({userName: userInfo.userName, password: userInfo.password});
 
     //登录成功的消息反馈
-    ElMessage({
-        message: '登录成功！',
-        type: 'success'
-    })
+    if(res){
+        //储存后端返回的token在本地客户端
+        localStorage.setItem('token', res.token);
 
-    //成功后通过router跳转到主页路径
-    router.push('/home');
+        //登录成功的消息反馈
+        ElMessage({
+            message: res.message,
+            type: 'success'
+        })
+
+        //成功后通过router跳转到主页路径
+        router.push('/home');
+    }
 };
 
 /**

@@ -2,8 +2,8 @@
  * @creater:ACBash
  * @create_time:22-11-10 12:56:22
  * @last_modify:ACBash
- * @modify_time:22-12-4 16:14:2
- * @line_count:92
+ * @modify_time:22-12-4 19:33:28
+ * @line_count:90
  **/
 
 const db = require("../config/db");
@@ -92,9 +92,7 @@ exports.userInfoController = (req, res) => {
     const userInfo = jwt.verify(token.split(`Bearer `)[1], jwtSecretKey);
     res.send({
         code: 0,
-        data: {
-            name: userInfo.name,
-            headImg: userInfo.head_img
-        }
+        name: userInfo.name,
+        headImg: userInfo.head_img
     });
 };
