@@ -1011,7 +1011,7 @@
 
 * 异步，async，await,computed
 
-* express框架使用axios进行post请求跨域问题，以及返回的数据是undefined的问题
+* express框架使用axios进行post请求返回的数据是undefined的问题
 
   解决：因为前端响应拦截中没有data
 
