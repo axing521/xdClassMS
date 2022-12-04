@@ -2,7 +2,7 @@
  * @creater:ACBash
  * @create_time:22-11-10 12:56:22
  * @last_modify:ACBash
- * @modify_time:22-12-4 15:26:17
+ * @modify_time:22-12-4 16:14:2
  * @line_count:92
  **/
 
@@ -46,14 +46,14 @@ exports.registerController = (req, res) => {
             'https://xd-video-pc-img.oss-cn-beijing.aliyuncs.com/xdclass_pro/default/head_img/18.jpeg',
             'https://xd-video-pc-img.oss-cn-beijing.aliyuncs.com/xdclass_pro/default/head_img/19.jpeg',
         ]
-        //随机生成1 - 10的整数，以便随机生成头像
-        const num = Math.floor(Math.random() * 10 + 1);
+        //随机生成0 - 9的整数，以便随机生成头像
+        const num = Math.floor(Math.random() * 10);
 
         //用户信息插入到数据库
         const userInsertSql = `insert into user (name, pwd, head_img) value (?, ?, ?)`;
         db.query(userInsertSql, [userName, passwordB, imgList[num]], (err, results) => {
             if(err) res.send({code: 1, message: err.message});
-            res.send({code: 0, message: `注册成功!`});
+            res.send({code: 0, message: `注册成功！`});
         });
     });
 };

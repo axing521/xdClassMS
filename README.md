@@ -1013,15 +1013,5 @@
 
 * express框架使用axios进行post请求跨域问题，以及返回的数据是undefined的问题
 
-  :用node.js写接口在express框架运行能拿到数据，但是前端拿到的数据是undefined的问题。
-  其实只要在后台将数据处理一下返回前段即可，主要在后端使用JSON的parse和stringify进行转换（这里说的只是用express框架，使用node.js写后台接口的情况）
-  1.将JSON对象转换为字符串
-  2.将JSON字符串转换为对象
-  ![在这里插入图片描述](https://img-blog.csdnimg.cn/20190424110336274.png)
-
-  此时在前端拿到的数据就是可以进行正常渲染
-
-  ![在这里插入图片描述](https://img-blog.csdnimg.cn/20190424110805394.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1JKTjA4MTQ=,size_16,color_FFFFFF,t_70)
-
-  
+  解决：因为前端响应拦截中没有data
 

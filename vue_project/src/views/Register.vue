@@ -72,21 +72,17 @@ const onRegister = () => {
 const getRegisterData = async() => {
     //注册接口的调用......
     const res = await getRegister({userName: userInfo.userName, password: userInfo.password});
-    console.log(res);
-    //注册成功的消息反馈
-    if(res?.message){
-        /* ElMessage({
-          message: '注册成功！',
+    
+    //注册成功的消息反馈'''
+    if(res){
+        ElMessage({
+          message: res,
           type: 'success'
-        }) */
+        })
 
         //成功后通过router跳转到登录路径
         router.push('/login');
     }
-    ElMessage({
-          message: '注册成功！',
-          type: 'success'
-        })
 };
 
 /**
