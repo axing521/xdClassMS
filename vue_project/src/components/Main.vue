@@ -20,7 +20,7 @@ import { computed, onMounted, reactive, ref } from 'vue';
 import Table from './Table.vue';
 import EditPop from './EditPop.vue';
 import Pagination from './Pagination.vue';
-import { getCourse } from '@/api';
+import { getCourse, changeCourse } from '@/api';
 import emitter from '@/utils/eventBus';
 
 //初始化的写死数据
@@ -191,6 +191,19 @@ const handleClick = () => {
 /**
  * 课程编辑的逻辑
  */
+//课程修改接口调用
+const changeCourseData = async (query) => {
+    const {title, price, id} = query;
+
+    const res = await changeCourse({title, price, id});
+
+    if(res){
+        ElMessage({
+            message: res.message,
+            type: 'success'
+        });
+    }
+};
 //编辑的数据
 const courseItemState = reactive({
     message: {}
@@ -219,14 +232,10 @@ const confirmClick = (val) => {
             }
         });
         
-        //修改接口的调用...
-
         isShowPop(false);
-        ElMessage({
-            showClose: true,
-            message: '更改成功！',
-            type: 'success'
-        })
+
+        //修改接口的调用...
+        changeCourseData({title: val.title, price: val.price, id: val.id});
     }else{
         ElMessage({
             showClose: true,

@@ -2,8 +2,8 @@
  * @creater:ACBash
  * @create_time:22-12-3 11:55:38
  * @last_modify:ACBash
- * @modify_time:22-12-4 19:55:1
- * @line_count:49
+ * @modify_time:22-12-5 12:2:9
+ * @line_count:61
  **/
 
 import request from "@/utils/request";
@@ -51,6 +51,18 @@ export const getCourse = async (data) => {
     const res = await request({
         method: 'get',
         url: '/api/v1/course/find',
+        data
+    });
+    return res;
+};
+
+/**
+ * 修改课程数据接口
+ */
+ export const changeCourse = async (data) => {
+    const res = await request({
+        method: 'get',
+        url: '/api/v1/course/update',
         data
     });
     return res;
