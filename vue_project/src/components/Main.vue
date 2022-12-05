@@ -16,17 +16,19 @@
 </template>
 
 <script setup>
-import { computed, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import Table from './Table.vue';
 import EditPop from './EditPop.vue';
 import Pagination from './Pagination.vue';
+import { getCourse } from '@/api';
+import emitter from '@/utils/eventBus';
 
 //初始化的写死数据
 const data = reactive({
     list: [
         {
             category: "front",
-            courseImg: "https://file.xdclass.net/video/2022/77-QD/cover.jpeg",
+            course_img: "https://file.xdclass.net/video/2022/77-QD/cover.jpeg",
             del: 0,
             id: 1,
             point: 9.8,
@@ -35,7 +37,7 @@ const data = reactive({
         },
         {
             category: "front",
-            courseImg: "https://file.xdclass.net/video/2022/75-Vue3/cover1.jpeg",
+            course_img: "https://file.xdclass.net/video/2022/75-Vue3/cover1.jpeg",
             del: 0,
             id: 2,
             point: 9.5,
@@ -44,7 +46,7 @@ const data = reactive({
         },
         {
             category: "front",
-            courseImg: "https://file.xdclass.net/video/2022/76-webpack5/cover.jpeg",
+            course_img: "https://file.xdclass.net/video/2022/76-webpack5/cover.jpeg",
             del: 0,
             id: 3,
             point: 9.3,
@@ -53,7 +55,7 @@ const data = reactive({
         },
         {
             category: "front",
-            courseImg: "https://file.xdclass.net/video/2021/74-git/WechatIMG3026.jpeg",
+            course_img: "https://file.xdclass.net/video/2021/74-git/WechatIMG3026.jpeg",
             del: 0,
             id: 4,
             point: 9.2,
@@ -62,18 +64,74 @@ const data = reactive({
         },
         {
             category: "front",
-            courseImg: "https://file.xdclass.net/video/2021/73-ES6/cover.jpeg",
+            course_img: "https://file.xdclass.net/video/2021/73-ES6/cover.jpeg",
             del: 0,
             id: 5,
             point: 9.4,
             price: "49",
             title: "22年新版-玩转ECMAScript6零基础到进阶实战es6视频"
         },
+        {
+            category: "front",
+            course_img: "https://file.xdclass.net/video/2021/70-Javascript/cover.jpeg",
+            del: 0,
+            id: 6,
+            point: 9.2,
+            price: "29",
+            title: "22年新-Javascript视频前端零基础到项目实战/js视频"
+        },
+        {
+            category: "front",
+            course_img: "https://file.xdclass.net/video/2021/69-HTML%2BCSS/cover.jpeg",
+            del: 0,
+            id: 7,
+            point: 9.4,
+            price: "49",
+            title: "22年新版-玩转html+css前端零基础到项目实战"
+        },
+        {
+            category: "back",
+            course_img: "https://file.xdclass.net/video/2021/71-HLSJCL/cover.jpeg",
+            del: 0,
+            id: 8,
+            point: 9.9,
+            price: "3699",
+            title: "微服务架构-海量数据商用短链平台项目大课【预售特价中】"
+        },
     ],
 
     page: 1,  //默认展示第一页的数据
     total: 15,   //数据的总条数
+    sideCategory: 'front',  //课程的分类
 })
+
+/**
+ * 课程列表数据获取 + 课程类目切换逻辑
+ */
+const getCourseData = async (query) => {
+    const category = query?.category || data.sideCategory;
+    const page = query?.page || 1;
+    const size = query?.size || 5;
+
+    const res = await getCourse({category, page, size});
+
+    if(res){
+        //筛选符合分类的课程
+        data.list = res.list.filter(item => item.category == category);
+        data.total = res.total;
+    }
+};
+
+onMounted(() => {
+    getCourseData();
+
+    //监听课程类目tab切换
+    emitter.on('course', val => {
+        data.sideCategory = val;
+        data.page = 1;
+        getCourseData({category: val, page: 1});
+    });
+});
 
 /**
  * 分页的逻辑
@@ -102,6 +160,7 @@ const currentChange = (val) => {
     }
 
     //请求课程的接口...
+    getCourseData({category: data.sideCategory, page: data.page});
 }
 
 /**

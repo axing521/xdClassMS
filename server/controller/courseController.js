@@ -2,8 +2,8 @@
  * @creater:ACBash
  * @create_time:22-11-21 0:51:41
  * @last_modify:ACBash
- * @modify_time:22-11-21 17:36:12
- * @line_count:71
+ * @modify_time:22-12-4 20:26:35
+ * @line_count:69
  **/
 
 const db = require("../config/db");
@@ -21,10 +21,8 @@ exports.listVideo = (req, res) => {
             if(err) return res.send({code: 1, message: err.message});
             res.send({
                 code: 0,
-                data: {
-                    total: resTotal[0].total,
-                    list: resPage
-				}
+                total: resTotal[0].total,
+                list: resPage
 			})
 		})
 	})

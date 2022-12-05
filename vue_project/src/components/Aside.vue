@@ -14,9 +14,9 @@
           <span>课程管理</span>
         </template>
 
-        <el-menu-item index="1-1">前端课程</el-menu-item>
-        <el-menu-item index="1-2">后端课程</el-menu-item>
-        <el-menu-item index="1-3">全栈课程</el-menu-item>
+        <el-menu-item index="1-1" @click="courseHandle('front')">前端课程</el-menu-item>
+        <el-menu-item index="1-2" @click="courseHandle('back')">后端课程</el-menu-item>
+        <el-menu-item index="1-3" @click="courseHandle('all')">全栈课程</el-menu-item>
       </el-sub-menu>
 
       <el-sub-menu index="2">
@@ -35,9 +35,20 @@
 </template>
 
 <script setup>
+import emitter from '@/utils/eventBus';
 import { defineProps } from 'vue';
 
+/**
+ * 控制侧边栏的折叠和展开
+ */
 const {isCollapse} = defineProps(['isCollapse']);
+
+/**
+ * 点击类目tab触发课程列表重新获取
+ */
+const courseHandle = (type) => {
+    emitter.emit('course', type);
+};
 
 </script>
 
