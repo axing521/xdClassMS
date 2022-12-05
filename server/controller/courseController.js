@@ -2,8 +2,8 @@
  * @creater:ACBash
  * @create_time:22-11-21 0:51:41
  * @last_modify:ACBash
- * @modify_time:22-12-5 12:6:21
- * @line_count:67
+ * @modify_time:22-12-5 12:30:41
+ * @line_count:65
  **/
 
 const db = require("../config/db");
@@ -67,9 +67,7 @@ exports.deleteVideoById = (req, res) => {
         
         res.send({
             code: 0,
-            data: {
-                message: `删除成功`
-			}
+            message: `删除成功`
         })
 	})
 }

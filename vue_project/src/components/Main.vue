@@ -20,8 +20,9 @@ import { computed, onMounted, reactive, ref } from 'vue';
 import Table from './Table.vue';
 import EditPop from './EditPop.vue';
 import Pagination from './Pagination.vue';
-import { getCourse, changeCourse } from '@/api';
+import { getCourse, changeCourse, deleteCourse } from '@/api';
 import emitter from '@/utils/eventBus';
+import { isFlowDeclaration } from '@babel/types';
 
 //初始化的写死数据
 const data = reactive({
@@ -248,6 +249,22 @@ const confirmClick = (val) => {
 /**
  * 课程删除的逻辑
  */
+//删除接口调用
+const deleteCourseData = async (query) => {
+    const res = await deleteCourse({id: query});
+
+    if(res){
+        ElMessage({
+            message: res.message,
+            type: 'success'
+        })
+    }
+
+    //如果当前页的数据清零时，重置到第一页
+    if(data.list.length == 0){
+        getCourseData({category: data.sideCategory, page: 1});
+    }
+};
 const deleteHandle = (val) => {
     if(val){
         data.list = data.list.filter((item) => {
@@ -255,12 +272,7 @@ const deleteHandle = (val) => {
         });
 
         //删除接口的调用...
-
-        ElMessage({
-            showClose: true,
-            message: '删除成功！',
-            type: 'success'
-        })
+        deleteCourseData(val);
     }
 };
 
