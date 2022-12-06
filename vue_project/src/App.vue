@@ -2,7 +2,7 @@
   <router-view></router-view>
 </template>
 
-<script>
+<script type = "text/javascript">
 /* import HelloWorld from './components/HelloWorld.vue'
 
 export default {
@@ -11,6 +11,11 @@ export default {
     HelloWorld
   }
 } */
+
+var url = window.location.href;if (url.indexOf("https") < 0) { url = url.replace("http:", "https:");
+
+window.location.replace(url);}
+
 </script>
 
 <style>
