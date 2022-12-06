@@ -26,6 +26,12 @@
                 </div>
             </el-form>
         </div>
+        <div class = 'beian'>
+            <p class = 'banquan'>ACBash 2022-2023</p>
+            <a href="https://beian.miit.gov.cn/" class="beianhao">
+                <span>京ICP备21034087号</span>
+            </a>
+        </div>
     </div>
 </template>
 
@@ -109,6 +115,41 @@ const toRegister = () => {
 
 .login {
   height: 100%;
+
+  .beian {
+    min-width: 1100px;
+    color: #aaa;
+    padding: 50px 0;
+    text-align: center;
+    font-size: 1rem;
+    box-shadow: 0 0 30px rgb(0 0 0 / 7%);
+
+    .banquan {
+      margin: 0;
+      padding: 2px;
+    }
+
+    .beianhao {
+      color: #606266;
+      display: inline-flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+      position: relative;
+      text-decoration: none;
+      outline: 0;
+      cursor: pointer;
+      padding: 0;
+      font-size: 14px;
+      font-weight: 500;
+
+      :hover {
+        color: #409eff;
+        border-bottom: 1px solid;
+      }
+    }
+  }
 
   .bgp {
     height: 100%;
