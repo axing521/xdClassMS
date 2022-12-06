@@ -12,9 +12,9 @@ export default {
   }
 } */
 
-var url = window.location.href;if (url.indexOf("https") < 0) { url = url.replace("http:", "https:");
+/* var url = window.location.href;if (url.indexOf("https") < 0) { url = url.replace("http:", "https:");
 
-window.location.replace(url);}
+window.location.replace(url);} */
 
 </script>
 
