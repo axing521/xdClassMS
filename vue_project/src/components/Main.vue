@@ -22,7 +22,6 @@ import EditPop from './EditPop.vue';
 import Pagination from './Pagination.vue';
 import { getCourse, changeCourse, deleteCourse } from '@/api';
 import emitter from '@/utils/eventBus';
-import { isFlowDeclaration } from '@babel/types';
 
 //初始化的写死数据
 const data = reactive({

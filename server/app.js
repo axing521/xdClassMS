@@ -2,7 +2,7 @@
  * @creater:ACBash
  * @create_time:22-11-10 12:25:56
  * @last_modify:ACBash
- * @modify_time:22-12-3 16:43:20
+ * @modify_time:22-12-6 13:39:31
  * @line_count:63
  **/
 
@@ -66,6 +66,6 @@ app.use((err, req, res, next) => {
     })
 })
 
-app.listen(3000, () => {
-    console.log("服务运行在 http://127.0.0.1:3000");
+app.listen(80, () => {
+    console.log("服务运行在 http://127.0.0.1:80");
 });

@@ -1004,9 +1004,88 @@
 ### 24.项目部署上线
 
 * 域名准备
+
 * vue3项目部署
+
+  ![image-20220502142439665](https://file.xdclass.net/note/2022/79-vue3%2Bnode%2Bmysql/images/image-20220502142439665.png)
+
 * Node环境安装
+
+  下载安装包
+
+  ```javascript
+  wget https://nodejs.org/dist/v16.15.0/node-v16.15.0-linux-x64.tar.xz
+  ```
+
+  解压文件
+
+  ```javascript
+  tar xvf node-v16.15.0-linux-x64.tar.xz
+  将node-v16.15.0-linux-x64.tar.xz重命名node
+  ```
+
+  创建软连接确保全局下可以使用Node和npm命令
+
+  ```javascript
+  ln -s /root/node/bin/node /usr/local/bin/node
+  ln -s /root/node/bin/npm /usr/local/bin/npm
+  ```
+
+  注意：如 /usr/local 目录中不存在bin文件夹，需要手动创建
+
 * pm2运行Node项目
+
+  - node项目端口修改成默认的80，访问 ip 地址时则不需要加端口号
+
+  - 将node项目上传服务器
+
+    使用filezilla可视化工具上传node项目文件
+
+    ```
+    cd /usr/local/node
+    ```
+
+    全局安装pm2
+
+    ```
+    npm i -g pm2  //安装命令
+    ln -s /root/node/bin/pm2 /usr/local/bin/pm2  //创建软连接
+    ```
+
+    PM2运行node项目
+
+    ```
+    cd /usr/local/node  //进入node目录
+    pm2 start app.js    //启动
+    ```
+
+    查看node项目是否运行
+
+    ```
+    netstat -tpln
+    ```
+
+    如果启动后，ip还是访问不了，查看pm2的进程占用，杀死进程，重新启动
+
+    ```
+    ps aux | grep pm2 //查看pm2进程占用情况
+    kill -9 pid       //-9：强制杀死，pid：进程id
+    ```
+
+    在浏览器中访问公网地址
+
+    ```
+    http://120.25.3.72
+    ```
+
+    - 注意
+      - 加在项目中设置的端口号（如果是80端口就则不需要）
+      - 服务器安全组配置允许访问端口号：80
+
+  ![image-20221206133748911](C:\Users\28274\AppData\Roaming\Typora\typora-user-images\image-20221206133748911.png)
+
+  ![image-20221206140207026](C:\Users\28274\AppData\Roaming\Typora\typora-user-images\image-20221206140207026.png)
+
 * bug修复
 
 ### 25. 存在的问题
@@ -1018,4 +1097,8 @@
 * express框架使用axios进行post请求返回的数据是undefined的问题
 
   解决：因为前端响应拦截中没有data
+
+* 腾讯云对象存储静态网站部署前端时，出现access deny，原因是因为静态网站的地址跟对象存储桶的地址不是一回事。
+
+![image-20221205210613984](C:\Users\28274\AppData\Roaming\Typora\typora-user-images\image-20221205210613984.png)
 
