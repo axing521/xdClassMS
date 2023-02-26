@@ -1,7 +1,17 @@
-# Geek-course-background-management-system
-自己独立实现的全栈项目，极客课程后台管理系统，vue3 + express + mysql。
+# xdClassMS
+自己独立实现的全栈项目，小滴课程后台管理系统，vue3 + element-plus +  express + mysql。
 
-🚀技术栈：vue3，express，mysql
+项目背景：本人研究生论文中研究的模型和算法需要部署到系统中进行落地应用，所以参考相关资料实践一个前后端系统的开发。
+
+项目内容：开发一个线上课程后台管理系统，对课程进行前端、后端和全栈的分类，并让管理者能够做出对课程和登录者的增删改查操作。
+
+技术方案：前端使用vue3+element-plus，后端使用express+mysql，在腾讯云服务器上通过docker部署mysql服务，使用pm2服务来持久化运行node后端项目，前端部署在阿里云对象存储桶中。在后端方面，定义数据库数据结构，使用express框架搭建后端服务，编写用户和课程相关的接口，通过配置CORS解决跨域问题，通过配置JWT进行用户信息的登录认证。在前端方面，通过设计图分析页面需求，使用element-plus组件库实现页面组件的样式和交互，通过vue编写前端页面以及路由的配置，最后通过axios请求二次封装来实现前后端接口联调。
+
+项目成果：实现用户注册/登录/注销功能，并且随机分配用户头像并展示，技术亮点在于侧边栏的展开收缩功能，以及课程分类功能，课程查询功能。总的来说，本项目还是对于我的实践意义比较大，实际应用了vue、express怎么去写一个前后端项目，以及element-plus组件库的使用，和后端怎么去连接mysql数据库。最后通过阿里云OSS部署前端，后端部署在我的腾讯云服务器上，成功上线了项目，很有成就感。（其实感觉写后端比写前端vue有意思一些哈哈哈）
+
+上线地址：[acbash.icu](http://acbash.icu)
+
+🚀技术栈：vue3，express，mysql，element-plus
 
 ### 1. 项目需求分析
 
@@ -1102,3 +1112,4 @@
 
 ![image-20221205210613984](C:\Users\28274\AppData\Roaming\Typora\typora-user-images\image-20221205210613984.png)
 
+* HTTPS
