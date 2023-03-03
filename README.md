@@ -1100,10 +1100,6 @@
 
 ### 25. 存在的问题
 
-* vue中v-model，:model，:value，:prop , :data,reactive, #defalut = 'scope',v-if,v-show,ref, prop都是什么意思,onmounted
-
-* 异步，async，await,computed
-
 * express框架使用axios进行post请求返回的数据是undefined的问题
 
   解决：因为前端响应拦截中没有data
