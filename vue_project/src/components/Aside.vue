@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-menu :collapse = 'isCollapse' default-active="2" class="el-menu-vertical-demo" active-text-color="#ffd04b" background-color="#545c64" text-color="#fff">
+    <el-menu :collapse='isCollapse' default-active="2" class="el-menu-vertical-demo" active-text-color="#ffd04b"
+      background-color="#545c64" text-color="#fff">
       <div class="xd-icon">
         <img src="../assets/xd-icon.png">
         <span>小滴课程管理系统</span>
@@ -41,13 +42,13 @@ import { defineProps } from 'vue';
 /**
  * 控制侧边栏的折叠和展开
  */
-const {isCollapse} = defineProps(['isCollapse']);
+const { isCollapse } = defineProps(['isCollapse']);
 
 /**
  * 点击类目tab触发课程列表重新获取
  */
 const courseHandle = (type) => {
-    emitter.emit('course', type);
+  emitter.emit('course', type);
 };
 
 </script>

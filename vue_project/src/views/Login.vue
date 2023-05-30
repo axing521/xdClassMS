@@ -1,45 +1,49 @@
 <template>
-    <div class = "login">
-        <div class = "bgp"></div>
-        <div class = 'login_container'>
-            <h1>小滴课程管理系统</h1>
-            <el-form class = 'login_form' :model = 'userInfo' :rules = 'rules' @keyup.enter='onLogin' ref = 'ref_form'>
-                <el-form-item prop = 'userName'>
-                    <el-input placeholder = '请输入用户名' v-model.trim="userInfo.userName">
-                        <template #prepend>
-                            <el-icon><Avatar /></el-icon>
-                        </template>
-                    </el-input>
-                </el-form-item>
+  <div class="login">
+    <div class="bgp"></div>
+    <div class='login_container'>
+      <h1>小滴课程管理系统</h1>
+      <el-form class='login_form' :model='userInfo' :rules='rules' @keyup.enter='onLogin' ref='ref_form'>
+        <el-form-item prop='userName'>
+          <el-input placeholder='请输入用户名' v-model.trim="userInfo.userName">
+            <template #prepend>
+              <el-icon>
+                <Avatar />
+              </el-icon>
+            </template>
+          </el-input>
+        </el-form-item>
 
-                <el-form-item prop = 'password'>
-                    <el-input placeholder = '请输入密码' show-password v-model.trim="userInfo.password">
-                        <template #prepend>
-                            <el-icon><Key /></el-icon>
-                        </template>
-                    </el-input>
-                </el-form-item>
-                <el-button type="primary" class="login_submit" @click = 'onLogin'>登录</el-button>
-                
-                <div class = 'login_register' @click = 'toRegister'>
-                去注册
-                </div>
-            </el-form>
+        <el-form-item prop='password'>
+          <el-input placeholder='请输入密码' show-password v-model.trim="userInfo.password">
+            <template #prepend>
+              <el-icon>
+                <Key />
+              </el-icon>
+            </template>
+          </el-input>
+        </el-form-item>
+        <el-button type="primary" class="login_submit" @click='onLogin'>登录</el-button>
+
+        <div class='login_register' @click='toRegister'>
+          去注册
         </div>
-        <div class = 'beian'>
-            <p class = 'banquan'>ACBash 2022-2023</p>
-            <a href="https://beian.miit.gov.cn/" class="beianhao">
-                <span>京ICP备21034087号</span>
-            </a>
-        </div>
+      </el-form>
     </div>
+    <div class='beian'>
+      <p class='banquan'>ACBash 2022-2023</p>
+      <a href="https://beian.miit.gov.cn/" class="beianhao">
+        <span>京ICP备2021034087号-1</span>
+      </a>
+    </div>
+  </div>
 </template>
 
 <script setup>
 
 import { reactive, ref } from 'vue';
 import router from '../router/index';
-import {getLogin} from '../api/index';
+import { getLogin } from '../api/index';
 
 /**
  * 初始的ref
@@ -49,55 +53,55 @@ const ref_form = ref(null);
  * 表单的数据声明
  */
 const userInfo = reactive({
-    userName: '',
-    password: ''
+  userName: '',
+  password: ''
 });
 /**
  * 表单数据校验规则
  */
 const rules = {
-    userName: [{required: 'true', trigger: 'blur', message: '用户名不能为空'}],
-    password: [{required: 'true', trigger: 'blur', message: '密码不能为空'}],
+  userName: [{ required: 'true', trigger: 'blur', message: '用户名不能为空' }],
+  password: [{ required: 'true', trigger: 'blur', message: '密码不能为空' }],
 }
 /**
  * 登录的方法
  */
 const onLogin = () => {
-    //登录信息不为空则进行登录接口调用
-    ref_form.value.validate((flag) => {
-        if(flag){
-            getLoginData()
-        }
-    })
+  //登录信息不为空则进行登录接口调用
+  ref_form.value.validate((flag) => {
+    if (flag) {
+      getLoginData()
+    }
+  })
 };
 /**
  * 登录的接口，获取执行登录后，后台返回的数据
  */
 const getLoginData = async () => {
-    //登录接口的调用......
-    const res = await getLogin({userName: userInfo.userName, password: userInfo.password});
+  //登录接口的调用......
+  const res = await getLogin({ userName: userInfo.userName, password: userInfo.password });
+
+  //登录成功的消息反馈
+  if (res) {
+    //储存后端返回的token在本地客户端
+    localStorage.setItem('token', res.token);
 
     //登录成功的消息反馈
-    if(res){
-        //储存后端返回的token在本地客户端
-        localStorage.setItem('token', res.token);
+    ElMessage({
+      message: res.message,
+      type: 'success'
+    })
 
-        //登录成功的消息反馈
-        ElMessage({
-            message: res.message,
-            type: 'success'
-        })
-
-        //成功后通过router跳转到主页路径
-        router.push('/home');
-    }
+    //成功后通过router跳转到主页路径
+    router.push('/home');
+  }
 };
 
 /**
  * 跳转去注册页面
  */
 const toRegister = () => {
-    router.push('/register');
+  router.push('/register');
 };
 
 </script>
@@ -208,5 +212,4 @@ const toRegister = () => {
       }
     }
   }
-}
-</style>
+}</style>

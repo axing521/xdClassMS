@@ -25,6 +25,7 @@
     "@vue/cli-service": "~5.0.0",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
+    "mini-css-extract-plugin": "^2.7.6",
     "unplugin-auto-import": "^0.7.1",
     "unplugin-icons": "^0.14.14",
     "unplugin-vue-components": "^0.19.3"
